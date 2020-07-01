@@ -1,6 +1,7 @@
 package com.javaex.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,94 +22,83 @@ public class UserController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
 
-		if ("joinForm".equals(action)) { // 회원가입 양식
-			System.out.println("joinForm");
-
+		if ("joinForm".equals(action)) {
 			WebUtil.forword(request, response, "/WEB-INF/views/user/joinForm.jsp");
-		} else if ("join".equals(action)) { // 회원가입
+		} else if ("join".equals(action)) {
 			System.out.println("join");
+
 			String id = request.getParameter("id");
-			String password = request.getParameter("password");
+			String pw = request.getParameter("pw");
 			String name = request.getParameter("name");
 			String gender = request.getParameter("gender");
 
-			UserVo vo = new UserVo(id, password, name, gender);
-			System.out.println(vo.toString());
-
+			UserVo vo = new UserVo(id, pw, name, gender);
 			UserDao userDao = new UserDao();
 			userDao.insert(vo);
+			System.out.println(vo.toString());
 
 			WebUtil.forword(request, response, "/WEB-INF/views/user/joinOk.jsp");
-
-		} else if ("loginForm".equals(action)) { // 로그인 양식
+		} else if ("loginForm".equals(action)) {
+			System.out.println("test");
 			WebUtil.forword(request, response, "/WEB-INF/views/user/loginForm.jsp");
 		} else if ("login".equals(action)) {
 			System.out.println("login");
 			String id = request.getParameter("id");
-			String password = request.getParameter("password");
+			String pw = request.getParameter("pw");
 
 			UserDao userDao = new UserDao();
-			UserVo authVo = userDao.getUser(id, password);
+			UserVo authvo = userDao.getUser(id, pw);
 
-			if (authVo == null) { // 로그인 실패
-				System.out.print("로그인 실패");
+			if (authvo == null) {
+				System.out.println("로그인 실패");
 				WebUtil.redirect(request, response, "/mysite2/user?action=loginForm&result=fail");
-
-			} else { // 로그인 성공
-				// 세션영역에 값을 추가
-				// 세션 영역에 값을 추가
+			} else {
 				HttpSession session = request.getSession();
-				session.setAttribute("authUser", authVo);
+				session.setAttribute("authUser", authvo);
 
 				WebUtil.redirect(request, response, "/mysite2/main");
-
 			}
-		} else if ("logout".equals(action)) { // 로그아웃 일때
-			System.out.println("logout");
+		} else if ("logout".equals(action)) {
 			HttpSession session = request.getSession();
 			session.removeAttribute("authUser");
 			session.invalidate();
-
 			WebUtil.redirect(request, response, "/mysite2/main");
 		} else if ("modifyForm".equals(action)) {
-			System.out.println("modifyForm");
 			HttpSession session = request.getSession();
-			// UserVo vo = (UserVo)session.getAttribute("authUser");
-			// vo.getNo();
-			// --> 아래랑 같은 문장
-			int no = ((UserVo) session.getAttribute("authUser")).getNo();
-
+			UserVo vo = (UserVo) session.getAttribute("authUser");
 			UserDao userDao = new UserDao();
-			UserVo vo = userDao.getUser(no);
-			request.setAttribute("userVo", vo);
-			System.out.println(vo.toString());
+			UserVo userVo = userDao.getUser(vo.getNo());
+
+			request.setAttribute("userVo", userVo);
 			WebUtil.forword(request, response, "/WEB-INF/views/user/modifyForm.jsp");
 		} else if ("modify".equals(action)) {
-			System.out.println("modify");
 			HttpSession session = request.getSession();
-			int no = ((UserVo) session.getAttribute("authUser")).getNo();
-			System.out.println(no);
-			
+			UserVo sessionVo = (UserVo) session.getAttribute("authUser");
+
+			System.out.println("modify");
+			int no = sessionVo.getNo();
+			String id = sessionVo.getId();
+			String pw = request.getParameter("pw");
 			String name = request.getParameter("name");
-			String password = request.getParameter("password");
 			String gender = request.getParameter("gender");
-						
-			UserVo vo = new UserVo(no, "", password, name, gender);
-			System.out.println(vo.toString());
-			
+
+			UserVo vo = new UserVo(no, id, pw, name, gender);
 			UserDao userDao = new UserDao();
-			userDao.update(vo);
-			//세션값 업데이트
-			//필요없는 값도 같이 세션에 올라감
-			//session.setAttribute("authUser", vo);
-			
-			//세션에 이름만 수정하기
-			UserVo svo = (UserVo)session.getAttribute("authUser");
-			svo.setName(name);
-			
+
+			System.out.println(vo.toString());
+
+			userDao.userUpdate(vo);
+
+//			UserVo authvo = new UserVo();
+//			authvo.setNo(no);
+//			authvo.setName(name);
+
+//			session.setAttribute("authUser", authvo);
+			sessionVo.setName(name);
+//			System.out.println("****************"+authvo.getName());
 			WebUtil.redirect(request, response, "/mysite2/main");
 		}
-		
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
