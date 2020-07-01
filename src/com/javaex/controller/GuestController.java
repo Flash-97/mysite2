@@ -37,7 +37,7 @@ public class GuestController extends HttpServlet {
 			GuestDao guestDao = new GuestDao();
 			guestDao.deleteList(no, pw);
 
-			WebUtil.redirect(request, response, "/mysite/guest?action=list");
+			WebUtil.redirect(request, response, "/mysite2/guest?action=list");
 		} else if ("insert".equals(action)) {
 			String name = request.getParameter("name");
 			String pw = request.getParameter("pw");
@@ -48,7 +48,7 @@ public class GuestController extends HttpServlet {
 
 			guestDao.insertLinst(vo);
 
-			WebUtil.redirect(request, response, "/mysite/guest?action=list");
+			WebUtil.redirect(request, response, "/mysite2/guest?action=list");
 		}
 
 	}
