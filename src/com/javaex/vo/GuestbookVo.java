@@ -1,31 +1,28 @@
 package com.javaex.vo;
 
-public class GuestVo {
+public class GuestbookVo {
+
 	private int no;
 	private String name;
 	private String password;
 	private String content;
-	private String date;
+	private String regDate;
 
-	public GuestVo(int no, String name, String content, String date) {
-		this.no = no;
-		this.name = name;
-		this.content = content;
-		this.date = date;
+	public GuestbookVo() {
 	}
 
-	public GuestVo(String name, String content, String password) {
-		this.name = name;
-		this.content = content;
-		this.password = password;
-	}
-
-	public GuestVo(int no, String name, String password, String content, String date) {
+	public GuestbookVo(int no, String name, String password, String content, String regDate) {
 		this.no = no;
 		this.name = name;
 		this.password = password;
 		this.content = content;
-		this.date = date;
+		this.regDate = regDate;
+	}
+
+	public GuestbookVo(String name, String password, String content) {
+		this.name = name;
+		this.password = password;
+		this.content = content;
 	}
 
 	public int getNo() {
@@ -60,18 +57,17 @@ public class GuestVo {
 		this.content = content;
 	}
 
-	public String getDate() {
-		return date;
+	public String getRegDate() {
+		return regDate;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
 	}
 
 	@Override
 	public String toString() {
-		return "GuestVo [no=" + no + ", name=" + name + ", password=" + password + ", content=" + content + ", date="
-				+ date + "]";
+		return "GuestbookVo [no=" + no + ", name=" + name + ", password=" + password + ", content=" + content
+				+ ", regDate=" + regDate + "]";
 	}
-
 }

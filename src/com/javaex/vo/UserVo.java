@@ -1,6 +1,7 @@
 package com.javaex.vo;
 
 public class UserVo {
+
 	private int no;
 	private String id;
 	private String password;
@@ -67,7 +68,7 @@ public class UserVo {
 
 	@Override
 	public String toString() {
-		return "userVo [no=" + no + ", id=" + id + ", password=" + password + ", name=" + name + ", gender=" + gender
+		return "UserVo [no=" + no + ", id=" + id + ", password=" + password + ", name=" + name + ", gender=" + gender
 				+ "]";
 	}
 

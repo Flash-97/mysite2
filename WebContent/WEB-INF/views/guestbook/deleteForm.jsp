@@ -1,10 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%
-	int no = Integer.parseInt(request.getParameter("no"));
-System.out.println(no);
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,14 +17,11 @@ System.out.println(no);
 <body>
 	<div id="wrap">
 
-		<
+		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //header -->
-		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
-
-		<jsp:include page="/WEB-INF/views/include/nav.jsp"></jsp:include>
 		<!-- //nav -->
 
-		<jsp:include page="/WEB-INF/views/include/asideGuest.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/asideGuestbook.jsp"></c:import>
 		<!-- //aside -->
 
 		<div id="content">
@@ -46,7 +40,7 @@ System.out.println(no);
 			<!-- //content-head -->
 
 			<div id="guestbook">
-				<form action="/mysite2/guest" method="get">
+				<form action="/mysite2/guestbook" method="get">
 					<table id="guestDelete">
 						<colgroup>
 							<col style="width: 10%;">
@@ -56,13 +50,13 @@ System.out.println(no);
 						</colgroup>
 						<tr>
 							<td>비밀번호</td>
-							<td><input type="password" name="pw"></td>
+							<td><input type="password" name="pass"></td>
 							<td class="text-left"><button type="submit">삭제</button></td>
-							<td><a href="/mysite2/main">[메인으로 돌아가기]</a></td>
+							<td><a href="/mysite2/guestbook">[리스트]</a></td>
 						</tr>
 					</table>
-					<input type='hidden' name="no" value="<%=no%>"> <input
-						type='hidden' name="action" value="delete">
+					<input type='hidden' name="action" value="delete"> <input
+						type='hidden' name="no" value="${param.no }">
 				</form>
 
 			</div>
@@ -71,7 +65,7 @@ System.out.println(no);
 		<!-- //content  -->
 		<div class="clear"></div>
 
-		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/footer.jsp"></c:import>
 		<!-- //footer -->
 
 	</div>

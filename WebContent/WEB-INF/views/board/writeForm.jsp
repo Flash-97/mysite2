@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -17,13 +18,11 @@
 <body>
 	<div id="wrap">
 
-		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //header -->
-
-		<jsp:include page="/WEB-INF/views/include/nav.jsp"></jsp:include>
 		<!-- //nav -->
 
-		<jsp:include page="/WEB-INF/views/include/asideBoard.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/asideBoard.jsp"></c:import>
 		<!-- //aside -->
 
 
@@ -45,7 +44,6 @@
 			<div id="board">
 				<div id="writeForm">
 					<form action="/mysite2/board" method="get">
-						<input type="hidden" name="action" value="write">
 						<!-- 제목 -->
 						<div class="form-group">
 							<label class="form-text" for="txt-title">제목</label> <input
@@ -58,8 +56,10 @@
 							<textarea id="txt-content" name="content"></textarea>
 						</div>
 
-						<a id="btn_cancel" href="/mysite2/board?action=list">취소</a>
+						<a id="btn_cancel" href="/mystite/board">취소</a>
 						<button id="btn_add" type="submit">등록</button>
+
+						<input type="text" name="action" value="write">
 
 					</form>
 					<!-- //form -->
@@ -71,8 +71,9 @@
 		<!-- //content  -->
 		<div class="clear"></div>
 
-		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/footer.jsp"></c:import>
 		<!-- //footer -->
+
 	</div>
 	<!-- //wrap -->
 

@@ -18,27 +18,11 @@
 <body>
 	<div id="wrap">
 
-		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //header -->
-
-		<div id="nav">
-			<ul>
-				<li><a href="">방명록</a></li>
-				<li><a href="">갤러리</a></li>
-				<li><a href="">게시판</a></li>
-				<li><a href="">입사지원서</a></li>
-			</ul>
-			<div class="clear"></div>
-		</div>
 		<!-- //nav -->
 
-		<div id="aside">
-			<h2>게시판</h2>
-			<ul>
-				<li><a href="">일반게시판</a></li>
-				<li><a href="">댓글게시판</a></li>
-			</ul>
-		</div>
+		<c:import url="/WEB-INF/views/include/asideBoard.jsp"></c:import>
 		<!-- //aside -->
 
 		<div id="content">
@@ -61,34 +45,34 @@
 					<form action="#" method="get">
 						<!-- 작성자 -->
 						<div class="form-group">
-							<span class="form-text">작성자</span> <span class="form-value">${bookUser.name }</span>
+							<span class="form-text">작성자</span> <span class="form-value">${boardVo.userName }</span>
 						</div>
 
 						<!-- 조회수 -->
 						<div class="form-group">
-							<span class="form-text">조회수</span> <span class="form-value">${bookUser.hit }</span>
+							<span class="form-text">조회수</span> <span class="form-value">${boardVo.hit }</span>
 						</div>
 
 						<!-- 작성일 -->
 						<div class="form-group">
-							<span class="form-text">작성일</span> <span class="form-value">${bookUser.date }</span>
+							<span class="form-text">작성일</span> <span class="form-value">${boardVo.regDate }</span>
 						</div>
 
 						<!-- 제목 -->
 						<div class="form-group">
-							<span class="form-text">제 목</span> <span class="form-value">${bookUser.title }</span>
+							<span class="form-text">제 목</span> <span class="form-value">${boardVo.title }</span>
 						</div>
 
 						<!-- 내용 -->
 						<div id="txt-content">
-							<span class="form-value"> ${bookUser.content } </span>
+							<span class="form-value"> ${boardVo.content } </span>
 						</div>
 
-						<c:if test="${bookUser.user_no == authUser.no }">
+						<c:if test="${boardVo.userNo == authUser.no }">
 							<a id="btn_modify"
-								href="/mysite2/board?action=modifyForm&boardNo=${bookUser.no }">수정</a>
+								href="/mysite2/board?action=modifyForm&no=${boardVo.no }">수정</a>
 						</c:if>
-						<a id="btn_modify" href="/mysite2/board?action=list">목록</a>
+						<a id="btn_list" href="/mysite2/board">목록</a>
 
 					</form>
 					<!-- //form -->
@@ -102,6 +86,7 @@
 
 		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
 		<!-- //footer -->
+
 	</div>
 	<!-- //wrap -->
 

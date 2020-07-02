@@ -21,67 +21,113 @@ public class BoardController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+
 		String action = request.getParameter("action");
 
-		if ("list".equals(action)) {
+		if ("read".equals(action)) {
+			System.out.println("BoardController > read");
+
+			// 파라미터 값 추출
+			int no = Integer.parseInt(request.getParameter("no"));
+
+			// Dao 사용
 			BoardDao boardDao = new BoardDao();
-			List<BoardVo> list = boardDao.getList();
+			BoardVo boardVo = boardDao.getBoard(no);
 
-			request.setAttribute("list", list);
+			// 포워드 --> 데이터전달(요청문서의 바디(attributte))
+			request.setAttribute("boardVo", boardVo);
+			WebUtil.forword(request, response, "/WEB-INF/views/board/read.jsp");
 
-			WebUtil.forword(request, response, "/WEB-INF/views/board/list.jsp");
 		} else if ("writeForm".equals(action)) {
-			WebUtil.forword(request, response, "WEB-INF/views/board/writeForm.jsp");
+			System.out.println("BoardController > writeForm");
+
+			// 포워드
+			WebUtil.forword(request, response, "/WEB-INF/views/board/writeForm.jsp");
+
 		} else if ("write".equals(action)) {
+			System.out.println("BoardController > write");
+
+			// 파라미터 값 추출 --> vo만들기
+			// 글작성자 == 로그인한 사용자 따라서 userNo는 세션에서 가져온다.
 			HttpSession session = request.getSession();
-			UserVo sessionVo = (UserVo) session.getAttribute("authUser");
+			int userNo = ((UserVo) session.getAttribute("authUser")).getNo();
+
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");
 
-			BoardVo vo = new BoardVo(sessionVo.getNo(), title, content);
+			BoardVo boardVo = new BoardVo();
+			boardVo.setTitle(title);
+			boardVo.setContent(content);
+			boardVo.setUserNo(userNo);
 
+			// Dao 사용
 			BoardDao boardDao = new BoardDao();
-			boardDao.insert(vo);
+			boardDao.write(boardVo);
 
-			WebUtil.redirect(request, response, "/mysite2/board?action=list");
-		} else if ("read".equals(action)) {
-			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+			// 리다이렉트
+			WebUtil.redirect(request, response, "/mysite2/board");
 
-			BoardDao boardDao = new BoardDao();
-			boardDao.updateHit(boardNo);
-			BoardVo vo = boardDao.read(boardNo);
-
-			request.setAttribute("bookUser", vo);
-
-			WebUtil.forword(request, response, "WEB-INF/views/board/read.jsp");
-		} else if ("delete".equals(action)) {
-			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
-
-			BoardDao boardDao = new BoardDao();
-
-			boardDao.delete(boardNo);
-
-			WebUtil.redirect(request, response, "/mysite2/board?action=list");
 		} else if ("modifyForm".equals(action)) {
-			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+			System.out.println("BoardController > modifyForm");
 
+			// 파라미터 값 추출
+			int no = Integer.parseInt(request.getParameter("no"));
+
+			// Dao 사용
 			BoardDao boardDao = new BoardDao();
-			BoardVo vo = boardDao.read(boardNo);
+			BoardVo boardVo = boardDao.getBoard(no);
 
-			request.setAttribute("bookUser", vo);
-			WebUtil.forword(request, response, "WEB-INF/views/board/modifyForm.jsp");
+			// 포워드 --> 데이터전달(요청문서의 바디(attributte))
+			request.setAttribute("boardVo", boardVo);
+			WebUtil.forword(request, response, "/WEB-INF/views/board/modifyForm.jsp");
+
 		} else if ("modify".equals(action)) {
-			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+			System.out.println("BoardController > modify");
+
+			// 파라미터 값 추출 --> vo만들기
+			int no = Integer.parseInt(request.getParameter("no"));
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");
+			BoardVo boardVo = new BoardVo(no, title, content);
 
-			BoardVo vo = new BoardVo(title, content, boardNo);
+			// Dao 사용
 			BoardDao boardDao = new BoardDao();
+			boardDao.modify(boardVo);
 
-			boardDao.modify(vo);
+			// 리다이렉트
+			WebUtil.redirect(request, response, "/mysite2/board");
 
-			WebUtil.redirect(request, response, "/mysite2/board?action=list");
+		} else if ("delete".equals(action)) {
+			System.out.println("BoardController > delete");
+
+			// 파라미터 값 추출
+			int no = Integer.parseInt(request.getParameter("no"));
+
+			// Dao 사용
+			BoardDao boardDao = new BoardDao();
+			boardDao.delete(no);
+
+			// 리다이렉트
+			WebUtil.redirect(request, response, "/mysite2/board");
+
+		} else {
+			System.out.println("BoardController > default:list");
+
+			List<BoardVo> boardList;
+			// 파라미터 값 추출
+			String keyword = request.getParameter("keyword");
+
+			// Dao 사용
+			BoardDao boardDao = new BoardDao();
+			boardList = boardDao.getList(keyword);
+
+			// 포워드 --> 데이터전달(요청문서의 바디(attributte))
+			request.setAttribute("boardList", boardList);
+			WebUtil.forword(request, response, "/WEB-INF/views/board/list.jsp");
+
 		}
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

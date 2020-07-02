@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 
 <!DOCTYPE html>
 <html>
@@ -18,13 +19,11 @@
 <body>
 	<div id="wrap">
 
-		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //header -->
-
-		<jsp:include page="/WEB-INF/views/include/nav.jsp"></jsp:include>
 		<!-- //nav -->
 
-		<jsp:include page="/WEB-INF/views/include/asideBoard.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/asideBoard.jsp"></c:import>
 		<!-- //aside -->
 
 		<div id="content">
@@ -46,8 +45,7 @@
 				<div id="list">
 					<form action="/mysite2/board" method="get">
 						<div class="form-group text-right">
-							<input type="hidden" name="action" value="search"> <input
-								type="text" name="content">
+							<input type="text" name="keyword" value="">
 							<button type="submit" id=btn_search>검색</button>
 						</div>
 					</form>
@@ -63,22 +61,19 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${requestScope.list }" var="vo"
-								varStatus="status">
+							<c:forEach items="${boardList }" var="boardVo">
 								<tr>
-									<td>${vo.no }</td>
+									<td>${boardVo.no }</td>
 									<td class="text-left"><a
-										href="/mysite2/board?action=read&boardNo=${vo.no}">${vo.title }</a></td>
-									<td>${vo.name }</td>
-									<td>${vo.hit }</td>
-									<td>${vo.date }</td>
-									<td><c:if
-											test="${sessionScope.authUser.no == vo.user_no }">
-											<a href="/mysite2/board?action=delete&boardNo=${vo.no}">[삭제]</a>
+										href="/mysite2/board?action=read&no=${boardVo.no }">${boardVo.title }</a></td>
+									<td>${boardVo.userName }</td>
+									<td>${boardVo.hit }</td>
+									<td>${boardVo.regDate }</td>
+									<td><c:if test="${boardVo.userNo == authUser.no }">
+											<a href="/mysite2/board?action=delete&no=${boardVo.no}">[삭제]</a>
 										</c:if></td>
 								</tr>
 							</c:forEach>
-
 						</tbody>
 					</table>
 
@@ -102,9 +97,10 @@
 						<div class="clear"></div>
 					</div>
 
-					<c:if test="${sessionScope.authUser != null }">
+					<c:if test="${!empty authUser }">
 						<a id="btn_write" href="/mysite2/board?action=writeForm">글쓰기</a>
 					</c:if>
+
 				</div>
 				<!-- //list -->
 			</div>
@@ -113,8 +109,9 @@
 		<!-- //content  -->
 		<div class="clear"></div>
 
-		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/footer.jsp"></c:import>
 		<!-- //footer -->
+
 	</div>
 	<!-- //wrap -->
 

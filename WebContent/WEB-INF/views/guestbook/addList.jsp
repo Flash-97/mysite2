@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-<%@ page import="java.util.List"%>
-<%@ page import="com.javaex.vo.GuestVo"%>
-
-<%
-	List<GuestVo> list = (List<GuestVo>) request.getAttribute("list");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -23,14 +17,11 @@
 <body>
 	<div id="wrap">
 
-		<
+		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //header -->
-		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
-
-		<jsp:include page="/WEB-INF/views/include/nav.jsp"></jsp:include>
 		<!-- //nav -->
 
-		<jsp:include page="/WEB-INF/views/include/asideGuest.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/asideGuestbook.jsp"></c:import>
 		<!-- //aside -->
 
 		<div id="content">
@@ -49,7 +40,7 @@
 			<!-- //content-head -->
 
 			<div id="guestbook">
-				<form action="/mysite2/guest" method="get">
+				<form action="/mysite2/guestbook" method="get">
 					<table id="guestAdd">
 						<colgroup>
 							<col style="width: 70px;">
@@ -64,7 +55,7 @@
 								<td><input id="input-uname" type="text" name="name"></td>
 								<th><label class="form-text" for="input-pass">패스워드</label>
 								</td>
-								<td><input id="input-pass" type="password" name="pw"></td>
+								<td><input id="input-pass" type="password" name="pass"></td>
 							</tr>
 							<tr>
 								<td colspan="4"><textarea name="content" cols="72" rows="5"></textarea></td>
@@ -76,34 +67,31 @@
 
 					</table>
 					<!-- //guestWrite -->
-					<input type="hidden" name="action" value="insert">
+					<input type="text" name="action" value="add">
 
 				</form>
-				<%
-					for (GuestVo vo : list) {
-				%>
-				<table class="guestRead">
-					<colgroup>
-						<col style="width: 10%;">
-						<col style="width: 40%;">
-						<col style="width: 40%;">
-						<col style="width: 10%;">
-					</colgroup>
-					<tr>
-						<td><%=vo.getNo()%></td>
-						<td><%=vo.getName()%></td>
-						<td><%=vo.getDate()%></td>
-						<td><a
-							href="/mysite2/guest?action=deleteForm&no=<%=vo.getNo()%>">[삭제]</a></td>
-					</tr>
-					<tr>
-						<td colspan=4 class="text-left"><%=vo.getContent()%></td>
-					</tr>
-				</table>
-				<%
-					}
-				%>
-				<!-- //guestRead -->
+
+				<c:forEach items="${guestList}" var="guestVo">
+					<table class="guestRead">
+						<colgroup>
+							<col style="width: 10%;">
+							<col style="width: 40%;">
+							<col style="width: 40%;">
+							<col style="width: 10%;">
+						</colgroup>
+						<tr>
+							<td>${guestVo.no}</td>
+							<td>${guestVo.name }</td>
+							<td>${guestVo.regDate }</td>
+							<td><a
+								href="/mysite2/guestbook?action=deleteForm&no=${guestVo.no }">[삭제]</a></td>
+						</tr>
+						<tr>
+							<td colspan=4 class="text-left">${guestVo.content }</td>
+						</tr>
+					</table>
+					<!-- //guestRead -->
+				</c:forEach>
 
 			</div>
 			<!-- //guestbook -->
@@ -111,7 +99,7 @@
 		<!-- //content  -->
 		<div class="clear"></div>
 
-		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/footer.jsp"></c:import>
 		<!-- //footer -->
 
 	</div>

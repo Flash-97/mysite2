@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -17,13 +18,11 @@
 <body>
 	<div id="wrap">
 
-		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //header -->
-
-		<jsp:include page="/WEB-INF/views/include/nav.jsp"></jsp:include>
 		<!-- //nav -->
 
-		<jsp:include page="/WEB-INF/views/include/asideBoard.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/asideBoard.jsp"></c:import>
 		<!-- //aside -->
 
 
@@ -45,42 +44,38 @@
 			<div id="board">
 				<div id="modifyForm">
 					<form action="/mysite2/board" method="get">
-						<input type="hidden" name="action" value="modify"> <input
-							type="hidden" name="boardNo" value=${bookUser.no }>
 						<!-- 작성자 -->
 						<div class="form-group">
-							<span class="form-text">작성자</span> <span class="form-value">${bookUser.name }</span>
+							<span class="form-text">작성자</span> <span class="form-value">${boardVo.userName }</span>
 						</div>
 
 						<!-- 조회수 -->
 						<div class="form-group">
-							<span class="form-text">조회수</span> <span class="form-value">${bookUser.hit }</span>
+							<span class="form-text">조회수</span> <span class="form-value">${boardVo.hit }</span>
 						</div>
 
 						<!-- 작성일 -->
 						<div class="form-group">
-							<span class="form-text">작성일</span> <span class="form-value">${bookUser.date }</span>
+							<span class="form-text">작성일</span> <span class="form-value">${boardVo.regDate }</span>
 						</div>
 
 						<!-- 제목 -->
 						<div class="form-group">
 							<label class="form-text" for="txt-title">제목</label> <input
-								type="text" id="txt-title" name="title" value=${bookUser.title }>
+								type="text" id="txt-title" name="title"
+								value="${boardVo.title }">
 						</div>
-
-
 
 						<!-- 내용 -->
 						<div class="form-group">
-							<textarea id="txt-content" name="content">
-								${bookUser.content }
-							</textarea>
+							<textarea id="txt-content" name="content">${boardVo.content }</textarea>
 						</div>
 
-						<a id="btn_cancel"
-							href="/mysite2/board?action=read&boardNo=${bookUser.no }">취소</a>
+						<a id="btn_cancel" href="/mysite2/board">취소</a>
 						<button id="btn_modify" type="submit">수정</button>
 
+						<input type="text" name="action" value="modify"> <input
+							type="text" name="no" value="${boardVo.no }">
 					</form>
 					<!-- //form -->
 				</div>
@@ -93,6 +88,7 @@
 
 		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
 		<!-- //footer -->
+
 	</div>
 	<!-- //wrap -->
 

@@ -1,43 +1,33 @@
 package com.javaex.vo;
 
 public class BoardVo {
+
 	private int no;
 	private String title;
 	private String content;
 	private int hit;
-	private String date;
-	private int user_no;
-	private String name;
+	private String regDate;
+	private int userNo;
+	private String userName;
 
-	public BoardVo(String title, String content, int no) {
+	public BoardVo() {
+	}
+
+	public BoardVo(int no, String title, String content) {
+		super();
 		this.no = no;
 		this.title = title;
 		this.content = content;
 	}
 
-	public BoardVo(int user_no, String title, String content) {
-		this.user_no = user_no;
+	public BoardVo(int no, String title, String content, int hit, String regDate, int userNo, String userName) {
+		this.no = no;
 		this.title = title;
 		this.content = content;
-	}
-
-	public BoardVo(int no, String name, int hit, String date, String title, String content, int user_no) {
-		this.no = no;
-		this.name = name;
 		this.hit = hit;
-		this.date = date;
-		this.title = title;
-		this.content = content;
-		this.user_no = user_no;
-	}
-
-	public BoardVo(int no, String title, String name, int hit, String date, int user_no) {
-		this.no = no;
-		this.title = title;
-		this.name = name;
-		this.hit = hit;
-		this.date = date;
-		this.user_no = user_no;
+		this.regDate = regDate;
+		this.userNo = userNo;
+		this.userName = userName;
 	}
 
 	public int getNo() {
@@ -72,34 +62,34 @@ public class BoardVo {
 		this.hit = hit;
 	}
 
-	public String getDate() {
-		return date;
+	public String getRegDate() {
+		return regDate;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
 	}
 
-	public int getUser_no() {
-		return user_no;
+	public int getUserNo() {
+		return userNo;
 	}
 
-	public void setUser_no(int user_no) {
-		this.user_no = user_no;
+	public void setUserNo(int userNo) {
+		this.userNo = userNo;
 	}
 
-	public String getName() {
-		return name;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	@Override
 	public String toString() {
-		return "BoardVo [no=" + no + ", title=" + title + ", content=" + content + ", hit=" + hit + ", date=" + date
-				+ ", user_no=" + user_no + "]";
+		return "BoardVo [no=" + no + ", title=" + title + ", content=" + content + ", hit=" + hit + ", regDate="
+				+ regDate + ", userNo=" + userNo + ", userName=" + userName + "]";
 	}
 
 }
